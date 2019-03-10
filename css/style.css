@@ -40,7 +40,6 @@
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding: 15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -96,6 +95,19 @@
     background: none;
 }
 
+.filter {
+    height: 50px;
+    border: 0;
+    margin-left: -20px;
+    width: 100%;
+    text-align: center;
+    font-size: 4.0vh;
+  }
+
+.locations {
+    padding-top: 162px;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 250px;
@@ -114,7 +126,6 @@
     }
 
     #page-content-wrapper {
-        padding: 20px;
         position: relative;
     }
 
@@ -126,17 +137,4 @@
 
 .sidebar-brand {
     padding-left: 20px;
-}
-
-.filter {
-    height: 50px;
-    border: 0;
-    margin-left: -20px;
-    width: 100%;
-    text-align: center;
-    font-size: 4.0vh;
-  }
-
-.locations {
-    padding-top: 162px;
 }
