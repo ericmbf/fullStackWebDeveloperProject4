@@ -22,7 +22,8 @@
                     <input type="text" class="filter" placeholder="Filter">
                 </li>
             </ul>
-            <ul class="locations" data-bind="foreach: placeList">
+
+            <ul class="locations" data-bind="foreach: places">
                 <li class="location-item" data-bind="text: $data.name"></li>
             </ul>
         </div>
@@ -34,7 +35,6 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-
                     </div>
                 </div>
             </div>
@@ -50,7 +50,6 @@
     <script src="js/app.js"></script>
     <script src="js/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6yuZdFpPHIiY2aTT42GDIFgXy5yEGcuU&callback=init&libraries=places" onerror="onGMapsError()"></script>
 </body>
 
 </html>
