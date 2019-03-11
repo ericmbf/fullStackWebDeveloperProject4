@@ -1,17 +1,17 @@
 var CLIENT_ID = '5Y0RQGFXWA4VMNA5MPIW5RSFZ2BK0CVH0E4WXDBRYUQ13N2F';
 var CLIENT_SECRET = 'L1SM3BEOGH1K4P05LN1FUHV1WF55XNSJCLVWRVYKSWWBKBTX';
 
-var places = [
+var placesModel = [
     {
       name: "America Airlines Arena",
       lat: 25.781685, 
       long: -80.186908
     },
-    // {
-    //   name: 'Phillip and Patricia Frost Museum of Science',
-    //   lat: 25.785390,
-    //   long: -80.188146
-    // }
+    {
+      name: 'Miami Freedom Tower',
+      lat: 25.780395,
+      long: -80.189653
+    }
 ]
 
 var map;
@@ -19,10 +19,11 @@ var map;
 var Place = function (data) { 
   var self = this;
 
-  this.name = ko.observable(data.name);
-  this.searchPlace = ko.observable(data.name.toLowerCase());
+  self.name = ko.observable(data.name);
+  self.searchPlace = ko.observable(data.name.toLowerCase());
   self.address = ko.observable();
   self.usersVisit = ko.observable();
+  self.isHide = ko.observable();
 
   var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll=';
   url += data.lat + ',';
@@ -39,6 +40,21 @@ var Place = function (data) {
   }).fail(function() {
     console.error('Foursquare API error. Please try again later.');
   });
+
+  this.point = new google.maps.Marker({
+    map: map,
+    position: new google.maps.LatLng(data.lat, data.long),
+    name: self.name()
+  });
+
+  this.setPoint = ko.computed(function() {
+    if(self.isHide()) {
+      self.point.setMap(null);
+    } else {
+      self.point.setMap(map);
+    }
+    return true;
+  });
 }
 
 var ViewModel = function () { 
@@ -47,22 +63,26 @@ var ViewModel = function () {
     this.searchText = ko.observable('');
     this.placeList = ko.observableArray([]);
 
-    places.forEach(function (newItem){
-        self.placeList.push(new Place(newItem));
-    })
-
     map = new google.maps.Map(document.getElementById('mapDiv'), {
       center: { lat: 25.765859, lng: -80.174280 },
-      zoom: 13
+      zoom: 14
     });
+
+    placesModel.forEach(function (newItem){
+      var place = new Place(newItem);  
+      place.isHide(false);
+      self.placeList.push(place);
+    })
 
     this.selectLocation = function(location) {
       console.log(location.name());
     };
 
     this.filteredPlaces = ko.computed(function() {
-      return this.placeList().filter(function(location) {
-        return location.searchPlace().indexOf(this.searchText().toLowerCase()) !== -1;
+      return this.placeList().filter(function(place) {
+        var state = place.searchPlace().indexOf(this.searchText().toLowerCase()) !== -1;
+        place.isHide(!state);
+        return state;
       }, this);
     }, this);
 }
