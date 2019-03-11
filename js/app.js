@@ -3,37 +3,44 @@ var CLIENT_SECRET = 'L1SM3BEOGH1K4P05LN1FUHV1WF55XNSJCLVWRVYKSWWBKBTX';
 
 var places = [
     {
-        name: "America Airlines Arena",
-        lat: 25.781685, 
-        long: -80.186908,
-        info: "",
+      name: "America Airlines Arena",
+      lat: 25.781685, 
+      long: -80.186908
     },
+    // {
+    //   name: 'Phillip and Patricia Frost Museum of Science',
+    //   lat: 25.785390,
+    //   long: -80.188146
+    // }
 ]
 
 var map;
 
-places.forEach(function(place) {
-  var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll=';
-  url += place.lat + ',';
-  url += place.long;
-  url += '&intent=global&query=' + place.title;
-  url += '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET;
-
-  $.getJSON(url).done(function(data) {
-    console.log(data.response.venues[0]);
-  }).fail(function() {
-    console.error('There was an error occured with the Foursquare API. Please try again later.');
-  });
-})
-
 var Place = function (data) { 
-    this.name = ko.observable(data.name);
-    this.details = ko.observable(data.imgSrc);
-    this.nicknames = ko.observableArray(data.nicknames);
+  this.title = ko.observable(data.name);
+  self.address = ko.observable();
+  self.usersVisit = ko.observable();
+
+  var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll=';
+  url += data.lat + ',';
+  url += data.long;
+  url += '&intent=global&query=' + data.name;
+  url += '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET;
+  
+  $.getJSON(url).done(function(data) {
+    var ret = data.response.venues[0];
+
+    self.address(ret.location.formattedAddress.join(', '));
+    self.usersVisit(ret.stats.usersCount);
+
+  }).fail(function() {
+    console.error('Foursquare API error. Please try again later.');
+  });
 }
 
 var ViewModel = function () { 
     var self = this;
+
     this.searchText = ko.observable('');
     this.placeList = ko.observableArray([]);
 
@@ -42,11 +49,15 @@ var ViewModel = function () {
     })
 
     map = new google.maps.Map(document.getElementById('mapDiv'), {
-      center: { lat: 59.942803, lng: 30.324841 },
-      zoom: 12
+      center: { lat: 25.765859, lng: -80.174280 },
+      zoom: 13
     });
 }
 
 function init() {
   ko.applyBindings(new ViewModel());
+};
+
+onMapsError = function() {
+  console.error('Google Maps is unavailable. Please try again later.');
 };
