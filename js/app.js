@@ -17,7 +17,10 @@ var places = [
 var map;
 
 var Place = function (data) { 
-  this.title = ko.observable(data.name);
+  var self = this;
+
+  this.name = ko.observable(data.name);
+  this.searchPlace = ko.observable(data.name.toLowerCase());
   self.address = ko.observable();
   self.usersVisit = ko.observable();
 
@@ -52,6 +55,16 @@ var ViewModel = function () {
       center: { lat: 25.765859, lng: -80.174280 },
       zoom: 13
     });
+
+    this.selectLocation = function(location) {
+      console.log(location.name());
+    };
+
+    this.filteredPlaces = ko.computed(function() {
+      return this.placeList().filter(function(location) {
+        return location.searchPlace().indexOf(this.searchText().toLowerCase()) !== -1;
+      }, this);
+    }, this);
 }
 
 function init() {
