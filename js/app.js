@@ -8,9 +8,14 @@ var placesModel = [
       long: -80.186908
     },
     {
-      name: 'Miami Freedom Tower',
-      lat: 25.780395,
-      long: -80.189653
+      name: 'Mandarin Oriental, Miami',
+      lat: 25.765025,
+      long: -80.185173
+    },
+    {
+      name: 'Brickell Key Jogging Trail',
+      lat: 25.769032,
+      long: -80.186610
     }
 ]
 
@@ -54,6 +59,26 @@ var Place = function (data) {
       self.point.setMap(map);
     }
     return true;
+  });
+
+  this.point.addListener('click', function() {
+    console.log("test");
+    
+    var formatedAddr = self.address().trim();
+    var infoHtml = [
+      '<div class="info text-center">',
+        '<h3>', self.name(), '</h3>',
+        '<p>',
+        'This place was visited <strong>', self.usersVisit(), '</strong> times.',
+        '</p>',
+        '<br>',
+        '<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>',
+        '<strong>', formatedAddr, '</strong>',
+      '</div>'
+    ];
+
+    var infoWindow = new google.maps.InfoWindow({ content: infoHtml.join('') });
+    infoWindow.open(map, self.point);
   });
 }
 
