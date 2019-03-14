@@ -1,6 +1,9 @@
 var CLIENT_ID = '5Y0RQGFXWA4VMNA5MPIW5RSFZ2BK0CVH0E4WXDBRYUQ13N2F';
 var CLIENT_SECRET = 'L1SM3BEOGH1K4P05LN1FUHV1WF55XNSJCLVWRVYKSWWBKBTX';
 
+var map;
+var actualPointTip;
+
 var placesModel = [
     {
       name: "America Airlines Arena",
@@ -19,7 +22,6 @@ var placesModel = [
     }
 ]
 
-var map;
 
 var Place = function (data) { 
   var self = this;
@@ -62,7 +64,10 @@ var Place = function (data) {
   });
 
   this.point.addListener('click', function() {
-    console.log("test");
+
+    if (actualPointTip) {
+      actualPointTip.close();
+    }
     
     var formatedAddr = self.address().trim();
     var infoHtml = [
@@ -77,8 +82,11 @@ var Place = function (data) {
       '</div>'
     ];
 
-    var infoWindow = new google.maps.InfoWindow({ content: infoHtml.join('') });
-    infoWindow.open(map, self.point);
+    var newToolTip = new google.maps.InfoWindow({ content: infoHtml.join('') });
+    newToolTip.open(map, self.point);
+
+    // Update actual place point
+    actualPointTip = newToolTip;
   });
 }
 
