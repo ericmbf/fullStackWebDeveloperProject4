@@ -125,5 +125,10 @@ function init() {
 };
 
 onMapsError = function() {
-  console.error('Google Maps is unavailable. Please try again later.');
+  alert('Google Maps is unavailable. Please try again later.');
 };
+
+$("#menu-toggle").click(function(e) {
+  e.preventDefault();
+  $("#wrapper").toggleClass("toggled");
+});
