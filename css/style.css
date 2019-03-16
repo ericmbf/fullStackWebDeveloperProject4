@@ -126,6 +126,16 @@
     left: 10px;
 }
 
+#foursquare-button {
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    top: 10px;
+    color: #d9edf7;
+    background-color: #13409d;
+    border-color: #13409d;
+}
+
 ul {
     overflow: auto;
   }

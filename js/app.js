@@ -7,8 +7,8 @@ var actualPointTip;
 var placesModel = [
     {
       name: "America Airlines Arena",
-      lat: 25.781685, 
-      long: -80.186908
+      lat: 25.781331, 
+      long: -80.187927
     },
     {
       name: 'Mandarin Oriental, Miami',
