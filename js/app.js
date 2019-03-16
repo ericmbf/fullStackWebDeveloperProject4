@@ -69,13 +69,13 @@ var Place = function (data) {
     console.error('Foursquare API error. Please try again later.');
   });
 
-  this.point = new google.maps.Marker({
+  self.point = new google.maps.Marker({
     map: map,
     position: new google.maps.LatLng(data.lat, data.long),
     name: self.name()
   });
 
-  this.setPoint = ko.computed(function() {
+  self.setPoint = ko.computed(function() {
     if(self.isHide()) {
       self.point.setMap(null);
     } else {
@@ -84,7 +84,7 @@ var Place = function (data) {
     return true;
   });
 
-  this.point.addListener('click', function() {
+  self.point.addListener('click', function() {
 
     if (actualPointTip) {
       actualPointTip.close();
@@ -117,6 +117,10 @@ var Place = function (data) {
     // Update actual place point
     actualPointTip = newToolTip;
   });
+
+  self.selectLocation = function() {
+    google.maps.event.trigger(self.point, 'click');
+  };
 }
 
 var ViewModel = function () { 
@@ -135,10 +139,6 @@ var ViewModel = function () {
       place.isHide(false);
       self.placeList.push(place);
     })
-
-    this.selectLocation = function(location) {
-      console.log(location.name());
-    };
 
     this.filteredPlaces = ko.computed(function() {
       return this.placeList().filter(function(place) {

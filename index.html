@@ -25,7 +25,9 @@
             </ul>
 
             <ul class="locations" data-bind="foreach: filteredPlaces">
-                <li class="location-item" data-bind="text: $data.name, click: $parent.selectLocation"></li>
+                <a href="">
+                    <li class="location-item" data-bind="text: $data.name, click: selectLocation"></li>
+                </a>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
