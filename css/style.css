@@ -26,7 +26,7 @@
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #000;
+    background: #e8e8e8;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -81,9 +81,12 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
+    height: 74px;
+    text-align: center;
+    font-size: 29px;
+    text-indent: 0px !important;
+    padding-top: 21px;
+    overflow-x: auto;
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -105,7 +108,8 @@
   }
 
 .locations {
-    padding-top: 162px;
+    padding-top: 139px;
+    font-size: 16px;
 }
 
 #mapDiv
@@ -121,6 +125,14 @@
     top: 55px;
     left: 10px;
 }
+
+ul {
+    overflow: auto;
+  }
+  
+  li {
+    white-space: nowrap;
+  }
 
 @media(min-width:768px) {
     #wrapper {
@@ -147,8 +159,4 @@
         position: relative;
         margin-right: 0;
     }
-}
-
-.sidebar-brand {
-    padding-left: 20px;
 }
