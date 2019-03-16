@@ -19,6 +19,16 @@ var placesModel = [
       name: 'Brickell Key Jogging Trail',
       lat: 25.769032,
       long: -80.186610
+    },
+    {
+      name: 'Adrienne Arsht Center',
+      lat: 25.787135, 
+      long: -80.189716
+    },
+    {
+      name: 'Brickell City Centre',
+      lat: 25.767302, 
+      long: -80.193264
     }
 ]
 
@@ -26,7 +36,7 @@ var placesModel = [
 var Place = function (data) { 
   var self = this;
 
-  self.name = ko.observable();
+  self.name = ko.observable(data.name);
   self.searchPlace = ko.observable(data.name.toLowerCase());
   self.address = ko.observable();
   self.isHide = ko.observable();
@@ -55,7 +65,6 @@ var Place = function (data) {
 
       var ret = data.response.venue;
       
-      self.name(ret.name);
       self.address(ret.location.formattedAddress.join(', '));
       self.categorie(ret.categories[0].name);
       self.likesCount(ret.likes.count);
