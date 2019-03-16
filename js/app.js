@@ -42,13 +42,15 @@ var Place = function (data) {
   url += '&intent=global&query=' + data.name;
   url += '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET;
   
+  // Search place from Foursquare API
   $.getJSON(url).done(function(data) {
-
+    
     var venueID = data.response.venues[0].id;
     var url = 'https://api.foursquare.com/v2/venues/' + venueID + '?';
     url += 'v=20161016';
     url += '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET;
     
+    // Get place details from Foursquare API from ID
     $.getJSON(url).done(function(data) {
 
       var ret = data.response.venue;
@@ -76,6 +78,7 @@ var Place = function (data) {
   });
 
   self.setPoint = ko.computed(function() {
+    // Check if should hide or show tooltip from point place
     if(self.isHide()) {
       self.point.setMap(null);
     } else {
@@ -85,7 +88,6 @@ var Place = function (data) {
   });
 
   self.point.addListener('click', function() {
-
     if (actualPointTip) {
       actualPointTip.close();
     }
@@ -118,6 +120,7 @@ var Place = function (data) {
     actualPointTip = newToolTip;
   });
 
+  // Implement click event on place
   self.selectLocation = function() {
     google.maps.event.trigger(self.point, 'click');
   };
@@ -134,12 +137,14 @@ var ViewModel = function () {
       zoom: 14
     });
 
+    // Fill the places list from model
     placesModel.forEach(function (newItem){
       var place = new Place(newItem);  
       place.isHide(false);
       self.placeList.push(place);
     })
 
+    // Implement filter from place list
     this.filteredPlaces = ko.computed(function() {
       return this.placeList().filter(function(place) {
         var state = place.searchPlace().indexOf(this.searchText().toLowerCase()) !== -1;
@@ -157,6 +162,7 @@ onMapsError = function() {
   alert('Google Maps is unavailable. Please try again later.');
 };
 
+// Implement toogle button
 $("#menu-toggle").click(function(e) {
   e.preventDefault();
   $("#wrapper").toggleClass("toggled");
