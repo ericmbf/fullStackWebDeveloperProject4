@@ -26,11 +26,15 @@ var placesModel = [
 var Place = function (data) { 
   var self = this;
 
-  self.name = ko.observable(data.name);
+  self.name = ko.observable();
   self.searchPlace = ko.observable(data.name.toLowerCase());
   self.address = ko.observable();
-  self.usersVisit = ko.observable();
   self.isHide = ko.observable();
+  self.categorie = ko.observable();
+  self.likesCount = ko.observable();
+  self.isOpen = ko.observable();
+  self.rating = ko.observable();
+  self.isHereNow = ko.observable();
 
   var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll=';
   url += data.lat + ',';
@@ -39,10 +43,27 @@ var Place = function (data) {
   url += '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET;
   
   $.getJSON(url).done(function(data) {
-    var ret = data.response.venues[0];
 
-    self.address(ret.location.formattedAddress.join(', '));
-    self.usersVisit(ret.stats.usersCount);
+    var venueID = data.response.venues[0].id;
+    var url = 'https://api.foursquare.com/v2/venues/' + venueID + '?';
+    url += 'v=20161016';
+    url += '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET;
+    
+    $.getJSON(url).done(function(data) {
+
+      var ret = data.response.venue;
+      
+      self.name(ret.name);
+      self.address(ret.location.formattedAddress.join(', '));
+      self.categorie(ret.categories[0].name);
+      self.likesCount(ret.likes.count);
+      self.isOpen(ret.popular.isOpen);
+      self.rating(ret.rating);
+      self.isHereNow(ret.hereNow.count);
+
+    }).fail(function() {
+      console.error('Foursquare API error. Please try again later.');
+    });
 
   }).fail(function() {
     console.error('Foursquare API error. Please try again later.');
@@ -70,11 +91,19 @@ var Place = function (data) {
     }
     
     var formatedAddr = self.address().trim();
+    var isOpen = (self.isOpen) ? "Open" : "Closed";
+
     var infoHtml = [
       '<div class="info text-center">',
         '<h3>', self.name(), '</h3>',
+        '<h5> Category: ', self.categorie(), '</h5>',
+        '<h5> Rating: ', self.rating(), '</h5>',
         '<p>',
-        'This place was visited <strong>', self.usersVisit(), '</strong> times.',
+        'Now, this place is <strong>', isOpen, '</strong>',
+        ' and there is/are <strong>', self.isHereNow(), '</strong> people visiting at this moment.',
+        '</p>',
+        '<p>',
+        '<strong>', self.likesCount(), '</strong> liked to be here.',
         '</p>',
         '<br>',
         '<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>',
