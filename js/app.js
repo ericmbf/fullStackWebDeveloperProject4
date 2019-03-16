@@ -62,11 +62,11 @@ var Place = function (data) {
       self.isHereNow(ret.hereNow.count);
 
     }).fail(function() {
-      console.error('Foursquare API error. Please try again later.');
+      alert('Foursquare API failure to get the venue details. Please try again later.');
     });
 
   }).fail(function() {
-    console.error('Foursquare API error. Please try again later.');
+    alert('Foursquare API failure to get the venues from search. Please try again later.');
   });
 
   self.point = new google.maps.Marker({
