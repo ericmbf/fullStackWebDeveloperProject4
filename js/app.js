@@ -2,7 +2,8 @@ var CLIENT_ID = '5Y0RQGFXWA4VMNA5MPIW5RSFZ2BK0CVH0E4WXDBRYUQ13N2F';
 var CLIENT_SECRET = 'L1SM3BEOGH1K4P05LN1FUHV1WF55XNSJCLVWRVYKSWWBKBTX';
 
 var map;
-var actualPointTip;
+var currentToolTip;
+var currentPoint;
 
 var placesModel = [
     {
@@ -97,8 +98,19 @@ var Place = function (data) {
   });
 
   self.point.addListener('click', function() {
-    if (actualPointTip) {
-      actualPointTip.close();
+    
+    if(currentToolTip) {
+      currentToolTip.close();
+    }
+
+    var disableBounce = function() {
+      currentPoint.setAnimation(null);
+      currentPoint = null;
+    };
+
+    if(currentPoint)
+    {
+      disableBounce();
     }
     
     var formatedAddr = self.address().trim();
@@ -125,8 +137,16 @@ var Place = function (data) {
     var newToolTip = new google.maps.InfoWindow({ content: infoHtml.join('') });
     newToolTip.open(map, self.point);
 
+    // Add animation to point place
+    self.point.setAnimation(google.maps.Animation.BOUNCE);
+
     // Update actual place point
-    actualPointTip = newToolTip;
+    currentToolTip = newToolTip;
+
+    // Get point to disable later
+    currentPoint = self.point;
+
+    google.maps.event.addListener(newToolTip, 'closeclick', disableBounce);
   });
 
   // Implement click event on place
