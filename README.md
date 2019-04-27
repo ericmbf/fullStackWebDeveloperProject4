@@ -1,4 +1,4 @@
-# project4FullStackDevelopment
+# Project 4 - Full Stack Web Developer Nanodregree
 
 This project implements a single page application with google maps API and foursquare API to show interesting places to visit in Miami Downtown.
 
