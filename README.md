@@ -7,7 +7,14 @@ This project implements a single page application with google maps API and fours
   ```bash
   $> git clone https://github.com/ericmbf/project4FullStackDevelopment.git
   ```
-2. Open index.html in the browser.
+2. Change your credentials from API on the app.js file.
+```
+var CLIENT_ID = 'PUT_YOUR_CLIENT_ID_HERE';
+var CLIENT_SECRET = 'PUT_SECRET_HERE';
+```
+
+3. Open index.html in the browser.
+
 
 ## Resources
 * KnockoutJS [Knockout.js Documentation](http://knockoutjs.com/documentation/introduction.html)
